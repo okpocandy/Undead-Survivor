@@ -5,17 +5,22 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed;
+    public RuntimeAnimatorController[] animatorCon;
+    public float monsterCurHp;
+    public float montserMaxHp;
     public Rigidbody2D target;
 
-    bool isLive = true;
+    bool isLive;
 
     Rigidbody2D rigid;
+    Animator anim;
     SpriteRenderer spriter;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -37,5 +42,15 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+        isLive = true;
+        monsterCurHp = montserMaxHp;
+    }
+
+    public void Init(SpawnData spawnData)
+    {
+        anim.runtimeAnimatorController = animatorCon[spawnData.spriteType];
+        speed = spawnData.monsterSpeed;
+        montserMaxHp = spawnData.monsterHp;
+        monsterCurHp = montserMaxHp;
     }
 }
