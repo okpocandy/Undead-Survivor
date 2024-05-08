@@ -53,4 +53,26 @@ public class Enemy : MonoBehaviour
         montserMaxHp = spawnData.monsterHp;
         monsterCurHp = montserMaxHp;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet"))
+            return;
+        monsterCurHp -= collision.GetComponent<Bullet>().damage;
+
+        if(monsterCurHp > 0)
+        {
+            // .. Live, hit Action
+        }
+        else
+        {
+            // .. Die
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
+    }
 }
